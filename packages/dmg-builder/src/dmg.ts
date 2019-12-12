@@ -32,8 +32,8 @@ export class DmgTarget extends Target {
     })
 
     const volumeName = sanitizeFileName(this.computeVolumeName(this.options.title))
-
-    const tempDmg = await createStageDmg(await packager.getTempFile(".dmg"), appPath, volumeName)
+    const dirToArchive = await packager.info.tempDirManager.createTempDir({prefix: "mac-dmg"})
+    const tempDmg = await createStageDmg(path.join(dirToArchive, "0.dmg"), appPath, volumeName)
 
     const specification = await this.computeDmgOptions()
     // https://github.com/electron-userland/electron-builder/issues/2115
